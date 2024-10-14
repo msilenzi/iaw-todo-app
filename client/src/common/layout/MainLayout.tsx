@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import { Link, useLocation } from 'react-router-dom'
 
 type MainLayoutProps = {
   children: ReactNode
@@ -17,20 +18,33 @@ export default function MainLayout({ children }: MainLayoutProps) {
   )
 }
 
+const mainNavbarLinks = [
+  { displayName: 'Todos', url: '/todos' },
+  { displayName: 'About', url: '/about' },
+]
+
 function MainNavbar() {
+  const location = useLocation()
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary mb-5">
       <Container>
-        <Navbar.Brand href="#home">Todo App</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          Todo App
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#home" active>
-              Todos
-            </Nav.Link>
-            <Nav.Link href="#link" active={false}>
-              About
-            </Nav.Link>
+            {mainNavbarLinks.map(({ displayName, url }) => (
+              <Nav.Link
+                as={Link}
+                to={url}
+                active={location.pathname === url}
+                key={url}
+              >
+                {displayName}
+              </Nav.Link>
+            ))}
           </Nav>
         </Navbar.Collapse>
       </Container>
