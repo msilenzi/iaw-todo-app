@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write --list-different .",
-    "tscheck": "tsc --noEmit -p ./tsconfig.app.json"
+    "tscheck": "tsc --noEmit -p ./tsconfig.app.json",
+    "api:generate": "openapi-generator-cli generate -i http://localhost:3000/api-json -g typescript-fetch -o ./src/common/api/generated"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@openapitools/openapi-generator-cli": "^2.14.0",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
