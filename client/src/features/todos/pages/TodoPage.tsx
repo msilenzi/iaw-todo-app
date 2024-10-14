@@ -1,20 +1,57 @@
+import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import { useParams } from 'react-router-dom'
+import api from '../../../common/api'
+import { Todo } from '../../../common/api/generated'
+import formatDate from '../../../common/helpers/formatDate'
+import LoadingPage from '../../../common/pages/LoadingPage'
+import NotFound404 from '../../../common/pages/NotFound404'
+import TodoDoneButton from '../components/TodoDoneButton'
 
 export default function TodoPage() {
-  const date = new Intl.DateTimeFormat('es-ES', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date())
+  const { id } = useParams()
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [todo, setTodo] = useState<Todo | null>(null)
+
+  useEffect(() => {
+    ;(async () => {
+      if (!id) {
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        const resp = await api.findTodoById({ id })
+        setTodo(resp)
+      } catch {
+        setTodo(null)
+      } finally {
+        setIsLoading(false)
+      }
+    })()
+  }, [id])
+
+  if (isLoading) {
+    return <LoadingPage />
+  }
+
+  if (todo === null) {
+    return (
+      <NotFound404
+        title="Todo no encontrado"
+        description="Lo sentimos, no pudimos encontrar el todo"
+      />
+    )
+  }
+
+  const formattedCreatedAt = formatDate(todo.createdAt)
+  const formattedUpdatedAt = formatDate(todo.updatedAt)
 
   return (
     <>
       <div className="d-flex justify-content-between flex-column flex-md-row">
-        <h2 className="m0">Comprar Pan</h2>
+        <h2 className="m0">{todo.title}</h2>
         <div className="d-flex gap-2">
           <Button variant="primary">
             <i className="bi bi-pencil-fill"></i>
@@ -25,38 +62,16 @@ export default function TodoPage() {
         </div>
       </div>
 
-      <p className="fw-light text-muted mb-4">Creado el {date}</p>
+      <p className="fw-light text-muted mb-0">Creado el {formattedCreatedAt}</p>
+      <p className="fw-light text-muted mb-4">
+        Ultima modificación el {formattedUpdatedAt}
+      </p>
 
-      <ToggleButtonGroup
-        className="mb-5"
-        type="radio"
-        name="options"
-        value="sin-terminar"
-      >
-        <ToggleButton
-          id="sin-terminar"
-          value="sin-terminar"
-          variant="outline-primary"
-        >
-          Sin Terminar
-        </ToggleButton>
-        <ToggleButton
-          id="terminado"
-          value="terminado"
-          variant="outline-primary"
-        >
-          Terminado
-        </ToggleButton>
-      </ToggleButtonGroup>
+      <TodoDoneButton todo={todo} setTodo={setTodo} />
 
       <section>
         <h4>Descripción</h4>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat
-          consequuntur natus consequatur minima nesciunt possimus, fugit fugiat
-          debitis, officiis rerum expedita, nemo aliquam asperiores harum.
-          Dolorum suscipit atque molestias earum!
-        </p>
+        <p>{todo.description}</p>
       </section>
     </>
   )
