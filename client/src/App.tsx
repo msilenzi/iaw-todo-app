@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import NotFound404 from './common/pages/NotFound404'
 import AboutPage from './features/about/pages/AboutPage'
 import TodoPage from './features/todos/pages/TodoPage'
@@ -9,8 +9,7 @@ export default function App() {
   return (
     <MainLayout>
       <Routes>
-        <Route path="/" element={<Navigate to="/todos" />} />
-        <Route path="/todos/" element={<TodosPage />} />
+        <Route path="/" element={<TodosPage />} />
         <Route path="/todos/:id" element={<TodoPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<NotFound404 />} />

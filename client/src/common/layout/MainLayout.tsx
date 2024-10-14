@@ -19,7 +19,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 }
 
 const mainNavbarLinks = [
-  { displayName: 'Todos', url: '/todos' },
+  { displayName: 'Todos', url: '/' },
   { displayName: 'About', url: '/about' },
 ]
 
