@@ -1,47 +1,35 @@
-import Form from 'react-bootstrap/Form'
-import ListGroup from 'react-bootstrap/ListGroup'
+import { useEffect, useState } from 'react'
+import Spinner from 'react-bootstrap/Spinner'
+import api from '../../../common/api'
+import { Todo } from '../../../common/api/generated'
+import TodosList from '../components/TodosList'
 
 export default function TodosPage() {
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    ;(async () => {
+      const resp = await api.findAllTodos()
+      setTodos(resp)
+      setIsLoading(false)
+    })()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
+      </div>
+    )
+  }
+
   return (
     <>
       <h2 className="mb-4">Todos</h2>
-
-      <ListGroup variant="flush">
-        <ListGroup.Item action className="todo-item">
-          <div className="d-flex align-items-baseline gap-3">
-            <div className="d-flex flex-column justify-content-center align-items-center gap-2">
-              <Form.Check aria-label="check todo" checked={false} readOnly />
-            </div>
-            <div>
-              <h4>Lorem ipsum</h4>
-              <p className="text-muted fw-light lh-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptate illum voluptas.
-              </p>
-            </div>
-          </div>
-        </ListGroup.Item>
-
-        <ListGroup.Item
-          action
-          className="todo-item text-decoration-line-through text-muted"
-        >
-          <div className="d-flex align-items-baseline gap-3">
-            <div className="d-flex flex-column justify-content-center align-items-center gap-2">
-              <Form.Check aria-label="check todo" checked={true} readOnly />
-            </div>
-            <div>
-              <h4>Lorem ipsum</h4>
-              <p className="text-muted fw-light lh-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptate illum voluptas, tenetur excepturi inventore commodi
-                labore eos qui quisquam repellendus unde ullam assumenda
-                recusandae. Officia quam hic porro rerum quidem?
-              </p>
-            </div>
-          </div>
-        </ListGroup.Item>
-      </ListGroup>
+      <TodosList todos={todos} />
     </>
   )
 }
