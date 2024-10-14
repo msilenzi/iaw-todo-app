@@ -17,7 +17,6 @@ async function bootstrap() {
     .setTitle('Todo API')
     .setDescription('The Todo API description')
     .setVersion('1.0')
-    .addTag('todo')
     .build()
 
   const options: SwaggerDocumentOptions = {
