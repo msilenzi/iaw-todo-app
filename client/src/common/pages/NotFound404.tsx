@@ -6,7 +6,7 @@ type NotFound404Props = {
   description?: string
 }
 
-export default function NotFound404({
+export default function NotFound404Page({
   title = 'Página no encontrada',
   description = 'Lo sentimos, no pudimos encontrar la página',
 }: NotFound404Props) {

@@ -5,7 +5,7 @@ import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
 import formatDate from '../../../common/helpers/formatDate'
 import LoadingPage from '../../../common/pages/LoadingPage'
-import NotFound404 from '../../../common/pages/NotFound404'
+import NotFound404Page from '../../../common/pages/NotFound404'
 import TodoDoneButton from '../components/TodoDoneButton'
 
 export default function TodoPage() {
@@ -38,7 +38,7 @@ export default function TodoPage() {
 
   if (todo === null) {
     return (
-      <NotFound404
+      <NotFound404Page
         title="Todo no encontrado"
         description="Lo sentimos, no pudimos encontrar el todo"
       />
