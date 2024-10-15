@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
 import TodosList from '../components/TodosList'
-import LoadingPage from '../../../common/pages/LoadingPage'
+import Loading from '../../../common/components/Loading'
 
 export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -17,7 +17,7 @@ export default function TodosPage() {
   }, [])
 
   if (isLoading) {
-    return <LoadingPage />
+    return <Loading />
   }
 
   return (

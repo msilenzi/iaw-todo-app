@@ -5,7 +5,7 @@ import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
 import formatDate from '../../../common/helpers/formatDate'
-import LoadingPage from '../../../common/pages/LoadingPage'
+import Loading from '../../../common/components/Loading'
 import TodoDoneButton from '../components/TodoDoneButton'
 
 export default function TodoPage() {
@@ -34,7 +34,7 @@ export default function TodoPage() {
   }, [id])
 
   if (isLoading) {
-    return <LoadingPage />
+    return <Loading />
   }
 
   if (todo === null) {
