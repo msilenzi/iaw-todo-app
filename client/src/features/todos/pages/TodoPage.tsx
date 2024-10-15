@@ -4,8 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
-import formatDate from '../../../common/helpers/formatDate'
 import Loading from '../../../common/components/Loading'
+import formatDate from '../../../common/helpers/formatDate'
 import TodoDoneEdit from '../components/TodoDoneEdit'
 
 export default function TodoPage() {
@@ -48,6 +48,12 @@ export default function TodoPage() {
     )
   }
 
+  async function handleDelete() {
+    setIsLoading(true)
+    await api.removeTodo({ id: todo!.id })
+    navigate('/')
+  }
+
   const formattedCreatedAt = formatDate(todo.createdAt)
   const formattedUpdatedAt = formatDate(todo.updatedAt)
 
@@ -59,7 +65,7 @@ export default function TodoPage() {
           <Button variant="primary">
             <i className="bi bi-pencil-fill"></i>
           </Button>
-          <Button variant="danger">
+          <Button variant="danger" onClick={handleDelete}>
             <i className="bi bi-trash-fill"></i>
           </Button>
         </div>
