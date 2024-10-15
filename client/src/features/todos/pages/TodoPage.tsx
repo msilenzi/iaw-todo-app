@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
+import CtaBanner from '../../../common/components/CtaBanner'
 import formatDate from '../../../common/helpers/formatDate'
 import LoadingPage from '../../../common/pages/LoadingPage'
-import NotFound404Page from '../../../common/pages/NotFound404'
 import TodoDoneButton from '../components/TodoDoneButton'
 
 export default function TodoPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(true)
   const [todo, setTodo] = useState<Todo | null>(null)
@@ -38,9 +39,11 @@ export default function TodoPage() {
 
   if (todo === null) {
     return (
-      <NotFound404Page
+      <CtaBanner
         title="Todo no encontrado"
-        description="Lo sentimos, no pudimos encontrar el todo"
+        description="Lo sentimos, no pudimos encontrar el todo."
+        ctaText="Volver al inicio"
+        onCtaClick={() => navigate('/')}
       />
     )
   }
