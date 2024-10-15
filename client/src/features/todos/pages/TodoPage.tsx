@@ -6,7 +6,7 @@ import { Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
 import formatDate from '../../../common/helpers/formatDate'
 import Loading from '../../../common/components/Loading'
-import TodoDoneButton from '../components/TodoDoneButton'
+import TodoDoneEdit from '../components/TodoDoneEdit'
 
 export default function TodoPage() {
   const { id } = useParams()
@@ -70,7 +70,7 @@ export default function TodoPage() {
         Ultima modificación el {formattedUpdatedAt}
       </p>
 
-      <TodoDoneButton todo={todo} setTodo={setTodo} />
+      <TodoDoneEdit todo={todo} setTodo={setTodo} />
 
       <section>
         <h4>Descripción</h4>

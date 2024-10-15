@@ -1,28 +1,26 @@
 import { useState } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
-import ToggleButton from 'react-bootstrap/ToggleButton'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
+import TodoDoneToggle from './TodoDoneToggle'
 
 type TodoDoneButtonProps = {
   todo: Todo
   setTodo: React.Dispatch<React.SetStateAction<Todo | null>>
 }
 
-export default function TodoDoneButton({ todo, setTodo }: TodoDoneButtonProps) {
+export default function TodoDoneEdit({ todo, setTodo }: TodoDoneButtonProps) {
   const [done, setDone] = useState(todo.done)
   const [isLoading, setIsLoading] = useState(false)
 
-  async function handleChange(value: number) {
-    const newDoneValue = Boolean(value)
-    setDone(newDoneValue)
+  async function handleChange(value: boolean) {
+    setDone(value)
     setIsLoading(true)
 
     try {
       const resp = await api.updateTodo({
         id: todo.id,
-        updateTodoDto: { done: newDoneValue },
+        updateTodoDto: { done: value },
       })
       setTodo(resp)
     } catch {
@@ -34,29 +32,11 @@ export default function TodoDoneButton({ todo, setTodo }: TodoDoneButtonProps) {
 
   return (
     <div className="d-flex align-items-center gap-3 mb-5">
-      <ToggleButtonGroup
-        type="radio"
-        name="options"
-        value={+done}
+      <TodoDoneToggle
+        value={done}
+        disabled={isLoading}
         onChange={handleChange}
-      >
-        <ToggleButton
-          id="sin-terminar"
-          value={0}
-          variant="outline-primary"
-          disabled={isLoading}
-        >
-          Sin Terminar
-        </ToggleButton>
-        <ToggleButton
-          id="terminado"
-          value={1}
-          variant="outline-primary"
-          disabled={isLoading}
-        >
-          Terminado
-        </ToggleButton>
-      </ToggleButtonGroup>
+      />
       {isLoading && (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Cargando...</span>
