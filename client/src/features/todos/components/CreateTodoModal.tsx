@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import {
-  Modal,
-  Button,
-  Form,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-} from 'react-bootstrap'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
+import Stack from 'react-bootstrap/Stack'
 import { CreateTodoDto } from '../../../common/api/generated'
+import TodoDoneToggle from './TodoDoneToggle'
 
 type CreateTodoModalProps = {
   isVisible: boolean
@@ -23,10 +20,6 @@ function CreateTodoModal({
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [done, setDone] = useState<boolean>(false)
-
-  const handleDoneChange = (value: number) => {
-    setDone(value === 1)
-  }
 
   const handleSubmit = () => {
     const newTodo: CreateTodoDto = {
@@ -77,23 +70,7 @@ function CreateTodoModal({
               </Form.Control.Feedback>
             </Form.Group>
 
-            <ToggleButtonGroup
-              type="radio"
-              name="options"
-              value={done ? 1 : 0}
-              onChange={handleDoneChange}
-            >
-              <ToggleButton
-                id="sin-terminar"
-                value={0}
-                variant="outline-primary"
-              >
-                Sin Terminar
-              </ToggleButton>
-              <ToggleButton id="terminado" value={1} variant="outline-primary">
-                Terminado
-              </ToggleButton>
-            </ToggleButtonGroup>
+            <TodoDoneToggle value={done} onChange={(value) => setDone(value)} />
           </Stack>
         </Form>
       </Modal.Body>
