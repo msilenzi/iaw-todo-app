@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import NotFound404Page from './common/pages/NotFound404'
+import NotFound404Page from './common/pages/NotFound404Page'
 import AboutPage from './features/about/pages/AboutPage'
 import TodoPage from './features/todos/pages/TodoPage'
 import TodosPage from './features/todos/pages/TodosPage'
