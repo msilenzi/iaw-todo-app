@@ -4,27 +4,29 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 type TodoDoneToggleProps = {
   value: boolean
   onChange: (newValue: boolean) => void
+  name: string
+  idSinTerminar: string
+  idTerminado: string
   disabled?: boolean
 }
 
 export default function TodoDoneToggle({
   value,
   onChange,
+  name,
+  idSinTerminar,
+  idTerminado,
   disabled,
 }: TodoDoneToggleProps) {
-  function handleChange(newValue: number) {
-    onChange(Boolean(newValue))
-  }
-
   return (
     <ToggleButtonGroup
       type="radio"
-      name="options"
+      name={name}
       value={+value}
-      onChange={handleChange}
+      onChange={(newValue) => onChange(Boolean(newValue))}
     >
       <ToggleButton
-        id="sin-terminar"
+        id={idSinTerminar}
         value={0}
         variant="outline-primary"
         disabled={disabled}
@@ -32,7 +34,7 @@ export default function TodoDoneToggle({
         Sin Terminar
       </ToggleButton>
       <ToggleButton
-        id="terminado"
+        id={idTerminado}
         value={1}
         variant="outline-primary"
         disabled={disabled}

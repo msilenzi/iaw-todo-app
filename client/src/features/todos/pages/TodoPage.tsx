@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from '../../../common/api'
-import { Todo } from '../../../common/api/generated'
+import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
 import Loading from '../../../common/components/Loading'
 import formatDate from '../../../common/helpers/formatDate'
+import CreateTodoModal from '../components/CreateTodoModal'
 import TodoDoneEdit from '../components/TodoDoneEdit'
 
 export default function TodoPage() {
@@ -14,6 +15,7 @@ export default function TodoPage() {
 
   const [isLoading, setIsLoading] = useState(true)
   const [todo, setTodo] = useState<Todo | null>(null)
+  const [isEditVisible, setIsEditVisible] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -54,6 +56,16 @@ export default function TodoPage() {
     navigate('/')
   }
 
+  async function handleUpdate(newTodo: CreateTodoDto) {
+    setIsLoading(true)
+    const updatedTodo = await api.updateTodo({
+      id: todo!.id,
+      updateTodoDto: newTodo,
+    })
+    setTodo(updatedTodo)
+    setIsLoading(false)
+  }
+
   const formattedCreatedAt = formatDate(todo.createdAt)
   const formattedUpdatedAt = formatDate(todo.updatedAt)
 
@@ -62,7 +74,7 @@ export default function TodoPage() {
       <div className="d-flex justify-content-between flex-column flex-md-row">
         <h2 className="m0">{todo.title}</h2>
         <div className="d-flex gap-2">
-          <Button variant="primary">
+          <Button variant="primary" onClick={() => setIsEditVisible(true)}>
             <i className="bi bi-pencil-fill"></i>
           </Button>
           <Button variant="danger" onClick={handleDelete}>
@@ -82,6 +94,13 @@ export default function TodoPage() {
         <h4>Descripción</h4>
         <p>{todo.description}</p>
       </section>
+
+      <CreateTodoModal
+        isVisible={isEditVisible}
+        onSave={handleUpdate}
+        handleClose={() => setIsEditVisible(false)}
+        initialTodo={todo}
+      />
     </>
   )
 }

@@ -36,6 +36,9 @@ export default function TodoDoneEdit({ todo, setTodo }: TodoDoneButtonProps) {
         value={done}
         disabled={isLoading}
         onChange={handleChange}
+        name="foo"
+        idSinTerminar="st1"
+        idTerminado="t1"
       />
       {isLoading && (
         <Spinner animation="border" role="status">

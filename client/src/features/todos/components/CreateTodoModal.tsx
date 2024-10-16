@@ -3,40 +3,41 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Stack from 'react-bootstrap/Stack'
-import { CreateTodoDto } from '../../../common/api/generated'
+import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import TodoDoneToggle from './TodoDoneToggle'
 
 type CreateTodoModalProps = {
   isVisible: boolean
   handleClose: () => void
-  onCreateTodo: (newTodo: CreateTodoDto) => void
+  onSave: (newTodo: CreateTodoDto) => void
+  initialTodo?: Todo
 }
 
 function CreateTodoModal({
   isVisible,
   handleClose,
-  onCreateTodo,
+  onSave,
+  initialTodo,
 }: CreateTodoModalProps) {
-  const [title, setTitle] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
-  const [done, setDone] = useState<boolean>(false)
+  const [title, setTitle] = useState<string>(initialTodo?.title ?? '')
+  const [description, setDescription] = useState<string>(
+    initialTodo?.description ?? ''
+  )
+  const [done, setDone] = useState<boolean>(initialTodo?.done ?? false)
 
   const handleSubmit = () => {
-    const newTodo: CreateTodoDto = {
-      title,
-      description,
-      done,
-    }
-    onCreateTodo(newTodo)
+    const newTodo: CreateTodoDto = { title, description, done }
+    onSave(newTodo)
     handleClose()
   }
 
+  const modalTitle = initialTodo ? 'Editar Todo' : 'Crear nuevo Todo'
   const isFormValid = title.trim() !== '' && description.trim() !== ''
 
   return (
     <Modal show={isVisible} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Crear nuevo Todo</Modal.Title>
+        <Modal.Title>{modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -70,7 +71,13 @@ function CreateTodoModal({
               </Form.Control.Feedback>
             </Form.Group>
 
-            <TodoDoneToggle value={done} onChange={(value) => setDone(value)} />
+            <TodoDoneToggle
+              value={done}
+              onChange={(value) => setDone(value)}
+              name="modalToggleDone"
+              idSinTerminar="modalSinTerminar"
+              idTerminado="modalTerminado"
+            />
           </Stack>
         </Form>
       </Modal.Body>
@@ -87,7 +94,14 @@ function CreateTodoModal({
           onClick={handleSubmit}
           disabled={!isFormValid}
         >
-          <i className="bi bi-plus-lg"></i> Crear
+          {initialTodo ?
+            <>
+              Actualizar <i className="bi bi-pencil-fill"></i>
+            </>
+          : <>
+              Crear <i className="bi bi-plus-lg"></i>
+            </>
+          }
         </Button>
       </Modal.Footer>
     </Modal>

@@ -42,7 +42,7 @@ export default function TodosPage() {
       <TodosList todos={todos} />
       <CreateTodoModal
         isVisible={isCreateTodoModalVisible}
-        onCreateTodo={handleCreateTodo}
+        onSave={handleCreateTodo}
         handleClose={() => setIsCreateTodoModalVisible(false)}
       />
     </>
