@@ -6,7 +6,7 @@ import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
 import Loading from '../../../common/components/Loading'
 import formatDate from '../../../common/helpers/formatDate'
-import CreateTodoModal from '../components/CreateTodoModal'
+import CreateUpdateTodoModal from '../components/CreateUpdateTodoModal'
 import TodoDoneEdit from '../components/TodoDoneEdit'
 
 export default function TodoPage() {
@@ -95,7 +95,7 @@ export default function TodoPage() {
         <p>{todo.description}</p>
       </section>
 
-      <CreateTodoModal
+      <CreateUpdateTodoModal
         isVisible={isEditVisible}
         onSave={handleUpdate}
         handleClose={() => setIsEditVisible(false)}

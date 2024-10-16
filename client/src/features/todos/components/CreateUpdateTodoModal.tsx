@@ -13,7 +13,7 @@ type CreateTodoModalProps = {
   initialTodo?: Todo
 }
 
-function CreateTodoModal({
+function CreateUpdateTodoModal({
   isVisible,
   handleClose,
   onSave,
@@ -108,4 +108,4 @@ function CreateTodoModal({
   )
 }
 
-export default CreateTodoModal
+export default CreateUpdateTodoModal

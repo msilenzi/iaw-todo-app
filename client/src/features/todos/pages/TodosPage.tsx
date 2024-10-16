@@ -3,14 +3,13 @@ import Button from 'react-bootstrap/Button'
 import api from '../../../common/api'
 import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import Loading from '../../../common/components/Loading'
-import CreateTodoModal from '../components/CreateTodoModal'
+import CreateUpdateTodoModal from '../components/CreateUpdateTodoModal'
 import TodosList from '../components/TodosList'
 
 export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isCreateTodoModalVisible, setIsCreateTodoModalVisible] =
-    useState(false)
+  const [isCreateVisible, setIsCreateVisible] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -35,15 +34,15 @@ export default function TodosPage() {
     <>
       <div className="d-flex align-items-center justify-content-between">
         <h2 className="mb-4">Todos</h2>
-        <Button onClick={() => setIsCreateTodoModalVisible(true)}>
+        <Button onClick={() => setIsCreateVisible(true)}>
           <i className="bi bi-plus-lg"></i> Agregar Todo
         </Button>
       </div>
       <TodosList todos={todos} />
-      <CreateTodoModal
-        isVisible={isCreateTodoModalVisible}
+      <CreateUpdateTodoModal
+        isVisible={isCreateVisible}
         onSave={handleCreateTodo}
-        handleClose={() => setIsCreateTodoModalVisible(false)}
+        handleClose={() => setIsCreateVisible(false)}
       />
     </>
   )
