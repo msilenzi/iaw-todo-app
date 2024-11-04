@@ -3,13 +3,24 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { MongooseModule } from '@nestjs/mongoose'
 import { TodosModule } from './todos/todos.module'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AuthModule } from './auth/auth.module'
+import { validate } from './config/configuration.validations'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }),
-    MongooseModule.forRoot('mongodb://localhost:27017/todo-api'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      validate,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('DB_URI'),
+      }),
+    }),
     TodosModule,
     AuthModule,
   ],
