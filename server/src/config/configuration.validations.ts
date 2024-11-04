@@ -12,7 +12,7 @@ class EnvironmentVariables {
   AUTH0_AUDIENCE: string
 
   @IsString()
-  AUTH0_OAUTH_CLIENT_ID: string
+  AUTH0_CLIENT_ID: string
 
   @IsString()
   DB_URI: string

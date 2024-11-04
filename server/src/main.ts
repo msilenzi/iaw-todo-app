@@ -30,17 +30,41 @@ async function bootstrap() {
     .setTitle('Todo API')
     .setDescription('The Todo API description')
     .setVersion('1.0')
+    .addOAuth2(
+      {
+        type: 'oauth2',
+        flows: {
+          implicit: {
+            authorizationUrl: `${configService.get('AUTH0_ISSUER_URL')}authorize?audience=${configService.get('AUTH0_AUDIENCE')}`,
+            tokenUrl: configService.get('AUTH0_AUDIENCE'),
+            scopes: {},
+          },
+        },
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'Auth0'
+    )
     .build()
 
   const options: SwaggerDocumentOptions = {
     operationIdFactory: (_, methodKey) => methodKey,
   }
 
+  const document = SwaggerModule.createDocument(app, config, options)
+
   const customOptions: SwaggerCustomOptions = {
     customSiteTitle: 'Todo API',
+    swaggerOptions: {
+      initOAuth: {
+        // this will pre-fill the client id in the Swagger authorization form
+        clientId: configService.get('AUTH0_CLIENT_ID'),
+      },
+      oauth2RedirectUrl: 'http://localhost:3000/api/oauth2-redirect.html',
+    },
   }
 
-  const document = SwaggerModule.createDocument(app, config, options)
   SwaggerModule.setup('api', app, document, customOptions)
 
   //
