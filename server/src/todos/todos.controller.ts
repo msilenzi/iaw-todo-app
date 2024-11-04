@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { TodosService } from './todos.service'
 import { CreateTodoDto } from './dto/create-todo.dto'
 import { UpdateTodoDto } from './dto/update-todo.dto'
@@ -6,6 +6,7 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe'
 import { Types } from 'mongoose'
 import { Todo } from './schemas/todo.schema'
+import { AuthGuard } from '@nestjs/passport'
 
 @Controller('todos')
 @ApiTags('todos')
@@ -13,18 +14,21 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Crear un nuevo todo' })
   createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
     return this.todosService.createTodo(createTodoDto)
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Obtener todos los todos' })
   findAllTodos() {
     return this.todosService.findAllTodos()
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Obtener un todo por ID' })
   @ApiParam({ name: 'id', type: String })
   findTodoById(@Param('id', ParseMongoIdPipe) id: Types.ObjectId) {
@@ -32,6 +36,7 @@ export class TodosController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Actualizar un todo por ID' })
   @ApiParam({ name: 'id', type: String })
   updateTodo(
@@ -42,6 +47,7 @@ export class TodosController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Eliminar un todo por ID' })
   @ApiParam({ name: 'id', type: String })
   removeTodo(@Param('id', ParseMongoIdPipe) id: Types.ObjectId) {
