@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiBearerAuth, ApiOAuth2, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { Types } from 'mongoose'
 import { ParseMongoIdPipe } from 'src/common/pipes/parse-mongo-id.pipe'
 import { CreateTodoDto } from './dto/create-todo.dto'
