@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import { useNavigate, useParams } from 'react-router-dom'
-import api from '../../../common/api'
 import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import CtaBanner from '../../../common/components/CtaBanner'
 import Loading from '../../../common/components/Loading'
 import formatDate from '../../../common/helpers/formatDate'
 import CreateUpdateTodoModal from '../components/CreateUpdateTodoModal'
 import TodoDoneEdit from '../components/TodoDoneEdit'
+import { useApi } from '../../../common/api/useApi'
 
 export default function TodoPage() {
   const { id } = useParams()
@@ -17,6 +17,8 @@ export default function TodoPage() {
   const [todo, setTodo] = useState<Todo | null>(null)
   const [isEditVisible, setIsEditVisible] = useState(false)
 
+  const { todosApi } = useApi()
+
   useEffect(() => {
     ;(async () => {
       if (!id) {
@@ -25,7 +27,7 @@ export default function TodoPage() {
       }
 
       try {
-        const resp = await api.findTodoById({ id })
+        const resp = await todosApi!.findTodoById({ id })
         setTodo(resp)
       } catch {
         setTodo(null)
@@ -33,7 +35,7 @@ export default function TodoPage() {
         setIsLoading(false)
       }
     })()
-  }, [id])
+  }, [id, todosApi])
 
   if (isLoading) {
     return <Loading />
@@ -52,13 +54,13 @@ export default function TodoPage() {
 
   async function handleDelete() {
     setIsLoading(true)
-    await api.removeTodo({ id: todo!.id })
+    await todosApi!.removeTodo({ id: todo!.id })
     navigate('/')
   }
 
   async function handleUpdate(newTodo: CreateTodoDto) {
     setIsLoading(true)
-    const updatedTodo = await api.updateTodo({
+    const updatedTodo = await todosApi!.updateTodo({
       id: todo!.id,
       updateTodoDto: newTodo,
     })

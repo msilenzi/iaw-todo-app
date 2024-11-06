@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Spinner from 'react-bootstrap/Spinner'
-import api from '../../../common/api'
 import { Todo } from '../../../common/api/generated'
+import { useApi } from '../../../common/api/useApi'
 import TodoDoneToggle from './TodoDoneToggle'
 
 type TodoDoneButtonProps = {
@@ -13,12 +13,14 @@ export default function TodoDoneEdit({ todo, setTodo }: TodoDoneButtonProps) {
   const [done, setDone] = useState(todo.done)
   const [isLoading, setIsLoading] = useState(false)
 
+  const { todosApi } = useApi()
+
   async function handleChange(value: boolean) {
     setDone(value)
     setIsLoading(true)
 
     try {
-      const resp = await api.updateTodo({
+      const resp = await todosApi!.updateTodo({
         id: todo.id,
         updateTodoDto: { done: value },
       })

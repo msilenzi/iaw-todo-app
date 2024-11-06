@@ -1,28 +1,30 @@
 import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
-import api from '../../../common/api'
 import { CreateTodoDto, Todo } from '../../../common/api/generated'
 import Loading from '../../../common/components/Loading'
 import CreateUpdateTodoModal from '../components/CreateUpdateTodoModal'
 import TodosList from '../components/TodosList'
 import CtaBanner from '../../../common/components/CtaBanner'
+import { useApi } from '../../../common/api/useApi'
 
 export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isCreateVisible, setIsCreateVisible] = useState(false)
 
+  const { todosApi } = useApi()
+
   useEffect(() => {
     ;(async () => {
-      const resp = await api.findAllTodos()
+      const resp = await todosApi!.findAllTodos()
       setTodos(resp)
       setIsLoading(false)
     })()
-  }, [])
+  }, [todosApi])
 
   async function handleCreateTodo(newTodo: CreateTodoDto) {
     setIsLoading(true)
-    const savedTodo = await api.createTodo({ createTodoDto: newTodo })
+    const savedTodo = await todosApi!.createTodo({ createTodoDto: newTodo })
     setTodos((prevTodos) => [...prevTodos, savedTodo])
     setIsLoading(false)
   }
