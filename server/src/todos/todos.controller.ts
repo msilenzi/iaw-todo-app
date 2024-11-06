@@ -22,14 +22,16 @@ export class TodosController {
   }
 
   @Get()
-  // @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('Auth0')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Obtener todos los todos' })
   findAllTodos() {
     return this.todosService.findAllTodos()
   }
 
   @Get(':id')
-  // @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('Auth0')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Obtener un todo por ID' })
   @ApiParam({ name: 'id', type: String })
   findTodoById(@Param('id', ParseMongoIdPipe) id: Types.ObjectId) {
