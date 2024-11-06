@@ -10,7 +10,7 @@ export default function TodosList({ todos }: TodosListProps) {
   return (
     <ListGroup variant="flush">
       {todos.map((todo) => (
-        <TodosListItem todo={todo} key={todo.id} />
+        <TodosListItem todo={todo} key={todo._id} />
       ))}
     </ListGroup>
   )

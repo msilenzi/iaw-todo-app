@@ -14,7 +14,7 @@ export default function TodosListItem({ todo }: TodoListItemProps) {
     <ListGroup.Item
       action
       className={todo.done ? 'text-decoration-line-through text-muted' : ''}
-      onClick={() => navigate(`/todos/${todo.id}`)}
+      onClick={() => navigate(`/todos/${todo._id}`)}
     >
       <div className="d-flex align-items-baseline gap-3">
         <div className="d-flex flex-column justify-content-center align-items-center gap-2">

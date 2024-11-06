@@ -17,15 +17,15 @@ export default function TodosPage() {
   useEffect(() => {
     ;(async () => {
       const resp = await todosApi!.findAllTodos()
-      setTodos(resp)
+      setTodos(resp.data)
       setIsLoading(false)
     })()
   }, [todosApi])
 
   async function handleCreateTodo(newTodo: CreateTodoDto) {
     setIsLoading(true)
-    const savedTodo = await todosApi!.createTodo({ createTodoDto: newTodo })
-    setTodos((prevTodos) => [...prevTodos, savedTodo])
+    const savedTodo = await todosApi!.createTodo(newTodo)
+    setTodos((prevTodos) => [...prevTodos, savedTodo.data])
     setIsLoading(false)
   }
 

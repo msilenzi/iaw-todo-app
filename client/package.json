@@ -11,7 +11,7 @@
     "format:check": "prettier --check .",
     "format:fix": "prettier --write --list-different .",
     "tscheck": "tsc --noEmit -p ./tsconfig.app.json",
-    "api:generate": "openapi-generator-cli generate -i http://localhost:3000/api-json -g typescript-fetch -o ./src/common/api/generated"
+    "api:generate": "openapi-generator-cli generate -i http://localhost:3000/api-json -g typescript-axios -o ./src/common/api/generated"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",

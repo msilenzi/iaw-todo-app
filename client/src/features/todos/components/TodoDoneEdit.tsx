@@ -20,11 +20,8 @@ export default function TodoDoneEdit({ todo, setTodo }: TodoDoneButtonProps) {
     setIsLoading(true)
 
     try {
-      const resp = await todosApi!.updateTodo({
-        id: todo.id,
-        updateTodoDto: { done: value },
-      })
-      setTodo(resp)
+      const resp = await todosApi!.updateTodo(todo._id, { done: value })
+      setTodo(resp.data)
     } catch {
       setTodo(null)
     } finally {

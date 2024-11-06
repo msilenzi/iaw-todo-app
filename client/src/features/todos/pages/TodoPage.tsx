@@ -27,8 +27,8 @@ export default function TodoPage() {
       }
 
       try {
-        const resp = await todosApi!.findTodoById({ id })
-        setTodo(resp)
+        const resp = await todosApi!.findTodoById(id)
+        setTodo(resp.data)
       } catch {
         setTodo(null)
       } finally {
@@ -54,22 +54,19 @@ export default function TodoPage() {
 
   async function handleDelete() {
     setIsLoading(true)
-    await todosApi!.removeTodo({ id: todo!.id })
+    await todosApi!.removeTodo(todo!._id)
     navigate('/')
   }
 
   async function handleUpdate(newTodo: CreateTodoDto) {
     setIsLoading(true)
-    const updatedTodo = await todosApi!.updateTodo({
-      id: todo!.id,
-      updateTodoDto: newTodo,
-    })
-    setTodo(updatedTodo)
+    const updatedTodo = await todosApi!.updateTodo(todo!._id, newTodo)
+    setTodo(updatedTodo.data)
     setIsLoading(false)
   }
 
-  const formattedCreatedAt = formatDate(todo.createdAt)
-  const formattedUpdatedAt = formatDate(todo.updatedAt)
+  const formattedCreatedAt = formatDate(new Date(todo.createdAt))
+  const formattedUpdatedAt = formatDate(new Date(todo.updatedAt))
 
   return (
     <>
