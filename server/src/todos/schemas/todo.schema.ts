@@ -19,6 +19,9 @@ export class Todo {
   @Prop({ required: false, default: false })
   done: boolean
 
+  @Prop({ required: true })
+  userId: string
+
   // Campos generados automáticamente por Mongoose:
   // Estos campos no llevan @Prop porque están para que los detecte Swagger
   // y genere los tipos correctamente. No influyen en la creación de la BD.
